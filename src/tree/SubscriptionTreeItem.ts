@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { ComputeManagementClient, ComputeManagementModels } from '@azure/arm-compute';
-import { AzExtTreeItem, AzureTreeItem, AzureWizard, AzureWizardExecuteStep, AzureWizardPromptStep, ICreateChildImplContext, LocationListStep, parseError, ResourceGroupCreateStep, SubscriptionTreeItemBase, VerifyProvidersStep } from 'vscode-azureextensionui';
+import { AzExtTreeItem, AzureTreeItem, AzureWizard, AzureWizardExecuteStep, AzureWizardPromptStep, ICreateChildImplContext, LocationListStep, parseError, ResourceGroupListStep, SubscriptionTreeItemBase, VerifyProvidersStep } from 'vscode-azureextensionui';
 import { getAvailableVMLocations } from '../commands/createVirtualMachine/getAvailableVMLocations';
 import { ImageListStep, ubuntu1804LTSImage } from '../commands/createVirtualMachine/ImageListStep';
 import { IVirtualMachineWizardContext } from '../commands/createVirtualMachine/IVirtualMachineWizardContext';
@@ -24,6 +24,7 @@ import { getResourceGroupFromId } from '../utils/azureUtils';
 import { nonNullProp } from '../utils/nonNull';
 import { configureSshConfig } from '../utils/sshUtils';
 import { VirtualMachineTreeItem } from './VirtualMachineTreeItem';
+
 
 export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
     public readonly childTypeLabel: string = localize('VirtualMachine', 'Virtual Machine');
@@ -86,15 +87,25 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
         const promptSteps: AzureWizardPromptStep<IVirtualMachineWizardContext>[] = [];
         const executeSteps: AzureWizardExecuteStep<IVirtualMachineWizardContext>[] = [];
 
+        promptSteps.push(new ResourceGroupListStep());
         promptSteps.push(new VirtualMachineNameStep());
         promptSteps.push(new OSListStep());
         promptSteps.push(new ImageListStep());
-
         promptSteps.push(new UsernamePromptStep());
         promptSteps.push(new PassphrasePromptStep());
+
+        const wizard_pre: AzureWizard<IVirtualMachineWizardContext> = new AzureWizard(wizardContext, { promptSteps });
+        await wizard_pre.prompt();
+        if (wizardContext.image?.label == "Mariner 1.0") {
+            //Currently, Mariner image in SharedImageGallery only allows WestUS2
+            //ext.outputChannel.appendLog(wizardContext.image?.label as string);
+            LocationListStep.setLocationSubset(wizardContext, new Promise((resolve) => {
+                resolve(["West US 2"]);
+            }), computeProvider);
+        }
         LocationListStep.addStep(wizardContext, promptSteps);
 
-        executeSteps.push(new ResourceGroupCreateStep());
+        //executeSteps.push(new ResourceGroupCreateStep());
         executeSteps.push(new PublicIpCreateStep());
         executeSteps.push(new VirtualNetworkCreateStep());
         executeSteps.push(new SubnetCreateStep());

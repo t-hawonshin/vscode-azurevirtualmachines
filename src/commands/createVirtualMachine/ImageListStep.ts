@@ -83,6 +83,10 @@ const linuxImages: ImageReferenceWithLabel[] = [
         offer: 'ubuntu-1804',
         sku: '1804',
         version: 'latest'
+    },
+    {
+        label: "Mariner 1.0",
+        id: "/subscriptions/f9cb372a-8903-4370-9ce0-3042e3bb2cc8/resourceGroups/cblmarinerpreviewRG/providers/Microsoft.Compute/galleries/cblmarinerpreviewSIG/images/cblmarinerpreview"
     }
 ];
 

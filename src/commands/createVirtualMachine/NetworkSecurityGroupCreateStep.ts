@@ -24,6 +24,7 @@ export class NetworkSecurityGroupCreateStep extends AzureWizardExecuteStep<IVirt
         const nsgName: string = nonNullProp(context, 'newVirtualMachineName') + '-nsg';
 
         const securityRules: NetworkManagementModels.SecurityRule[] = context.os !== VirtualMachineOS.windows ? [
+            { name: 'OpenPort_8080', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '8080', sourceAddressPrefix: '*', destinationAddressPrefix: '*', access: 'Allow', priority: 350, direction: 'Inbound' },
             { name: 'SSH', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '22', sourceAddressPrefix: '*', destinationAddressPrefix: '*', access: 'Allow', priority: 340, direction: 'Inbound' },
             { name: 'HTTPS', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '443', sourceAddressPrefix: '*', destinationAddressPrefix: '*', access: 'Allow', priority: 320, direction: 'Inbound' },
             { name: 'HTTP', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '80', sourceAddressPrefix: '*', destinationAddressPrefix: '*', access: 'Allow', priority: 300, direction: 'Inbound' }

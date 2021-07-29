@@ -11,11 +11,13 @@ import { AzureExtensionApi, AzureExtensionApiProvider } from 'vscode-azureextens
 import { addSshKey } from './commands/addSshKey';
 import { revealTreeItem } from './commands/api/revealTreeItem';
 import { copyIpAddress } from './commands/copyIpAddress';
+import { createAzureVPN } from './commands/createAzureVPN';
 import { createVirtualMachine, createVirtualMachineAdvanced } from './commands/createVirtualMachine/createVirtualMachine';
 import { deleteVirtualMachine } from './commands/deleteVirtualMachine/deleteVirtualMachine';
 import { openInPortal } from './commands/openInPortal';
 import { openInRemoteSsh } from './commands/openInRemoteSsh';
 import { restartVirtualMachine } from './commands/restartVirtualMachine';
+import { setSshPort } from './commands/setSshPort';
 import { startVirtualMachine } from './commands/startVirtualMachine';
 import { stopVirtualMachine } from './commands/stopVirtualMachine';
 import { viewProperties } from './commands/viewProperties';
@@ -55,6 +57,8 @@ export async function activateInternal(context: vscode.ExtensionContext, perfSta
         registerCommand('azureVirtualMachines.copyIpAddress', copyIpAddress);
         registerCommand('azureVirtualMachines.viewProperties', viewProperties);
         registerCommand('azureVirtualMachines.openInRemoteSsh', openInRemoteSsh);
+        registerCommand('azureVirtualMachines.setSshPort', setSshPort);
+        registerCommand('azureVirtualMachines.createAzureVPN', createAzureVPN);
         registerCommand('azureVirtualMachines.showOutputChannel', () => { ext.outputChannel.show(); });
         registerCommand('azureVirtualMachines.showRemoteSshExtension', () => { void vscode.commands.executeCommand('extension.open', remoteSshExtensionId); });
 

@@ -14,7 +14,7 @@ import { ext } from '../extensionVariables';
 import { localize } from '../localize';
 import { createComputeClient, createNetworkClient } from '../utils/azureClients';
 import { getNameFromId, getResourceGroupFromId } from '../utils/azureUtils';
-import { nonNullProp, nonNullValueAndProp } from '../utils/nonNull';
+import { nonNullProp, nonNullValue, nonNullValueAndProp } from '../utils/nonNull';
 import { treeUtils } from '../utils/treeUtils';
 
 export class VirtualMachineTreeItem extends AzureTreeItem {
@@ -63,8 +63,36 @@ export class VirtualMachineTreeItem extends AzureTreeItem {
         this.contextValue = vm.osProfile?.linuxConfiguration ? VirtualMachineTreeItem.linuxContextValue : VirtualMachineTreeItem.windowsContextValue;
     }
 
+    public getVmName(): string {
+        return nonNullValueAndProp(this.virtualMachine.osProfile, 'computerName');
+    }
+
     public getUser(): string {
         return nonNullValueAndProp(this.virtualMachine.osProfile, 'adminUsername');
+    }
+
+    public getPassword(): string {
+        return nonNullValueAndProp(this.virtualMachine.osProfile, 'adminPassword');
+    }
+
+
+    public async getPrivateIpAddress(): Promise<string> {
+        const networkClient: NetworkManagementClient = await createNetworkClient(this.root);
+        const rgName: string = getResourceGroupFromId(this.id);
+
+        const networkInterfaces: ComputeManagementModels.NetworkInterfaceReference[] = nonNullValueAndProp(this.virtualMachine.networkProfile, 'networkInterfaces');
+        if (networkInterfaces.length === 0) {
+            throw new Error(localize('noNicConfigs', 'No network interfaces are associated with "{0}"', this.name));
+        }
+
+        const networkInterfaceName: string = getNameFromId(nonNullProp(networkInterfaces[0], 'id'));
+        const networkInterface: NetworkManagementModels.NetworkInterface = await networkClient.networkInterfaces.get(rgName, networkInterfaceName);
+        if (!networkInterface.ipConfigurations || networkInterface.ipConfigurations.length === 0) {
+            throw new Error(localize('noIpConfigs', 'No IP configurations are associated with network interface "{0}"', networkInterface.name));
+        }
+
+        const privateIPAddress: string = nonNullValue(networkInterface.ipConfigurations[0].privateIPAddress);
+        return privateIPAddress;
     }
 
     public async getIpAddress(): Promise<string> {

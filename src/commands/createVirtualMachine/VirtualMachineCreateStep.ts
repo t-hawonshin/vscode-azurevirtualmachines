@@ -31,20 +31,30 @@ export class VirtualMachineCreateStep extends AzureWizardExecuteStep<IVirtualMac
         const hardwareProfile: ComputeManagementModels.HardwareProfile = { vmSize: context.size };
 
         const vmName: string = nonNullProp(context, 'newVirtualMachineName');
-        const storageProfile: ComputeManagementModels.StorageProfile = {
-            imageReference: context.image,
-            osDisk: {
+
+        const storageProfile: ComputeManagementModels.StorageProfile = { imageReference: context.image };
+
+        if (context.image?.label == "Mariner 1.0") {
+            storageProfile.osDisk = {
+                diskSizeGB: 256,
                 name: vmName,
                 createOption: 'FromImage',
                 managedDisk: { storageAccountType: context.isCustomCloud ? 'Standard_LRS' : 'Premium_LRS' }
-            }
-        };
+            };
+        } else {
+            storageProfile.osDisk = {
+                name: vmName,
+                createOption: 'FromImage',
+                managedDisk: { storageAccountType: context.isCustomCloud ? 'Standard_LRS' : 'Premium_LRS' }
+            };
+        }
 
         const networkInterface: NetworkManagementModels.NetworkInterface = nonNullProp(context, 'networkInterface');
         const networkProfile: ComputeManagementModels.NetworkProfile = { networkInterfaces: [{ id: networkInterface.id }] };
 
         const osProfile: ComputeManagementModels.OSProfile = { computerName: vmName, adminUsername: context.adminUsername };
-        if (context.os === VirtualMachineOS.linux) {
+
+        if (context.image?.label == "Mariner 1.0") {
             const { sshKeyName, keyData } = await createSshKey(context, vmName, context.passphrase || '');
             context.sshKeyName = sshKeyName;
             const linuxConfiguration: ComputeManagementModels.LinuxConfiguration = {
@@ -58,6 +68,19 @@ export class VirtualMachineCreateStep extends AzureWizardExecuteStep<IVirtualMac
             };
             osProfile.linuxConfiguration = linuxConfiguration;
             osProfile.adminPassword = context.passphrase;
+        } else if (context.os === VirtualMachineOS.linux) {
+            const { sshKeyName, keyData } = await createSshKey(context, vmName, context.passphrase || '');
+            context.sshKeyName = sshKeyName;
+            const linuxConfiguration: ComputeManagementModels.LinuxConfiguration = {
+                disablePasswordAuthentication: true, ssh: {
+                    publicKeys: [{
+                        keyData,
+                        // because this is a Linux VM, use '/' as path separator rather than using path.join()
+                        path: `/home/${context.adminUsername}/.ssh/authorized_keys`
+                    }]
+                }
+            };
+            osProfile.linuxConfiguration = linuxConfiguration;
         } else {
             osProfile.adminPassword = context.passphrase;
             const windowConfiguration: ComputeManagementModels.WindowsConfiguration = {};

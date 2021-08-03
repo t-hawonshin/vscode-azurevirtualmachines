@@ -9,7 +9,6 @@ import { ext } from '../extensionVariables';
 import { VirtualMachineTreeItem } from '../tree/VirtualMachineTreeItem';
 
 
-
 export async function createAzureVPN(context: IActionContext, node?: VirtualMachineTreeItem): Promise<void> {
     if (!node) {
         node = await ext.tree.showTreeItemPicker<VirtualMachineTreeItem>(VirtualMachineTreeItem.linuxContextValue, context);

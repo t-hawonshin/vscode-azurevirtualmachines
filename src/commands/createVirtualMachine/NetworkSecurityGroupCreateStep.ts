@@ -4,6 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { NetworkManagementClient, NetworkManagementModels } from '@azure/arm-network';
+import * as http from 'http';
 import { Progress } from "vscode";
 import { AzureWizardExecuteStep, LocationListStep } from "vscode-azureextensionui";
 import { ext } from '../../extensionVariables';
@@ -12,6 +13,7 @@ import { createNetworkClient } from '../../utils/azureClients';
 import { nonNullProp, nonNullValueAndProp } from '../../utils/nonNull';
 import { IVirtualMachineWizardContext } from './IVirtualMachineWizardContext';
 import { VirtualMachineOS } from './OSListStep';
+
 
 export class NetworkSecurityGroupCreateStep extends AzureWizardExecuteStep<IVirtualMachineWizardContext> {
     public priority: number = 220;
@@ -23,8 +25,26 @@ export class NetworkSecurityGroupCreateStep extends AzureWizardExecuteStep<IVirt
         // when creating a VM on the portal, this is the suffix that is added to the network security group
         const nsgName: string = nonNullProp(context, 'newVirtualMachineName') + '-nsg';
 
+        let local_ip = '';
+        function getIP() {
+            return new Promise((resolve, reject) => {
+                http.get('http://bot.whatismyipaddress.com', function (res) {
+                    res.setEncoding('utf8');
+                    res.on('data', function (chunk) {
+                        local_ip += chunk;
+                        resolve(chunk);
+                    });
+                    res.on('error', err => {
+                        reject(err);
+                    });
+                });
+            });
+        }
+        await getIP();
+        ext.outputChannel.appendLog(local_ip);
+
         const securityRules: NetworkManagementModels.SecurityRule[] = context.os !== VirtualMachineOS.windows ? [
-            { name: 'OpenPort_8080', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '8080', sourceAddressPrefix: '*', destinationAddressPrefix: '*', access: 'Allow', priority: 350, direction: 'Inbound' },
+            { name: 'OpenPort_8080', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '8080', sourceAddressPrefix: local_ip, destinationAddressPrefix: '*', access: 'Allow', priority: 350, direction: 'Inbound' },
             { name: 'SSH', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '22', sourceAddressPrefix: '*', destinationAddressPrefix: '*', access: 'Allow', priority: 340, direction: 'Inbound' },
             { name: 'HTTPS', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '443', sourceAddressPrefix: '*', destinationAddressPrefix: '*', access: 'Allow', priority: 320, direction: 'Inbound' },
             { name: 'HTTP', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '80', sourceAddressPrefix: '*', destinationAddressPrefix: '*', access: 'Allow', priority: 300, direction: 'Inbound' }

@@ -50,6 +50,7 @@
         "onCommand:azureVirtualMachines.viewProperties",
         "onCommand:azureVirtualMachines.reportIssue",
         "onCommand:azureVirtualMachines.setSshPort",
+        "onCommand:azureVirtualMachines.setDevEnvironment",
         "onCommand:azureVirtualMachines.createAzureVPN",
         "onView:azVmTree"
     ],
@@ -136,6 +137,11 @@
             {
                 "command": "azureVirtualMachines.setSshPort",
                 "title": "%azureVirtualMachines.setSshPort%",
+                "category": "Azure Virtual Machines"
+            },
+            {
+                "command": "azureVirtualMachines.setDevEnvironment",
+                "title": "%azureVirtualMachines.setDevEnvironment%",
                 "category": "Azure Virtual Machines"
             },
             {
@@ -242,6 +248,11 @@
                     "group": "1@4"
                 },
                 {
+                    "command": "azureVirtualMachines.setDevEnvironment",
+                    "when": "view == azVmTree && viewItem == linuxVirtualMachine",
+                    "group": "1@5"
+                },
+                {
                     "command": "azureVirtualMachines.createAzureVPN",
                     "when": "view == azVmTree && viewItem == linuxVirtualMachine",
                     "group": "3@3"
@@ -329,12 +340,14 @@
         "@azure/arm-resources": "^4.0.0",
         "@azure/arm-resources-profile-2020-09-01-hybrid": "^1.0.0",
         "@types/async": "^3.2.7",
+        "@types/ssh2-sftp-client": "^5.3.2",
         "async": "^3.2.0",
         "fs-extra": "^8.1.0",
         "open": "^8.0.4",
         "semver": "^5.7.0",
         "ssh-config": "^4.0.5",
         "ssh2": "1.1.0",
+        "ssh2-sftp-client": "^7.0.1",
         "ssh2shell": "^1.9.4",
         "vscode-azureextensionui": "^0.46.0",
         "vscode-nls": "^4.1.0",

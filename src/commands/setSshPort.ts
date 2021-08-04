@@ -34,7 +34,8 @@ export async function setSshPort(context: IActionContext, node?: VirtualMachineT
     ext.outputChannel.appendLog(openingPort);
 
     const cmds = {
-        cmd1: 'sudo bash -c "echo \'Port 8080\nPort 22\nAllowTCPFORWARDING=yes\' >> /etc/ssh/sshd_config"',
+        //cmd1: 'sudo bash -c "echo \'Port 8080\nPort 22\nAllowTCPFORWARDING=yes\' >> /etc/ssh/sshd_config"',
+        cmd1: 'sudo bash -c "echo \'Port 8080\nPort 22\nAllowTCPFORWARDING=yes\n\' | cat - /etc/ssh/sshd_config > temp && mv temp /etc/ssh/sshd_config"',
         cmd2: 'sudo iptables -A INPUT -p tcp -m tcp --dport 8080 -j ACCEPT',
         cmd3: 'sudo systemctl restart sshd'
     };

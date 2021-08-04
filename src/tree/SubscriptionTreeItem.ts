@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { ComputeManagementClient, ComputeManagementModels } from '@azure/arm-compute';
-import { AzExtTreeItem, AzureTreeItem, AzureWizard, AzureWizardExecuteStep, AzureWizardPromptStep, ICreateChildImplContext, LocationListStep, parseError, ResourceGroupListStep, SubscriptionTreeItemBase, VerifyProvidersStep } from 'vscode-azureextensionui';
+import { AzExtTreeItem, AzureTreeItem, AzureWizard, AzureWizardExecuteStep, AzureWizardPromptStep, ICreateChildImplContext, LocationListStep, parseError, ResourceGroupCreateStep, ResourceGroupListStep, SubscriptionTreeItemBase, VerifyProvidersStep } from 'vscode-azureextensionui';
 import { getAvailableVMLocations } from '../commands/createVirtualMachine/getAvailableVMLocations';
 import { ImageListStep, ubuntu1804LTSImage } from '../commands/createVirtualMachine/ImageListStep';
 import { IVirtualMachineWizardContext } from '../commands/createVirtualMachine/IVirtualMachineWizardContext';
@@ -102,10 +102,11 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
             LocationListStep.setLocationSubset(wizardContext, new Promise((resolve) => {
                 resolve(["West US 2"]);
             }), computeProvider);
+
         }
         LocationListStep.addStep(wizardContext, promptSteps);
 
-        //executeSteps.push(new ResourceGroupCreateStep());
+        executeSteps.push(new ResourceGroupCreateStep());
         executeSteps.push(new PublicIpCreateStep());
         executeSteps.push(new VirtualNetworkCreateStep());
         executeSteps.push(new SubnetCreateStep());
@@ -128,7 +129,7 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
         await wizard.prompt();
 
         context.showCreatingTreeItem(nonNullProp(wizardContext, 'newVirtualMachineName'));
-        wizardContext.newResourceGroupName = await wizardContext.relatedNameTask;
+        //wizardContext.newResourceGroupName = await wizardContext.relatedNameTask;
 
         await wizard.execute();
 

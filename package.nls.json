@@ -15,8 +15,7 @@
     "azureVirtualMachines.copyIpAddress": "Copy IP Address",
     "azureVirtualMachines.viewProperties": "View Properties",
     "azureVirtualMachines.openInRemoteSsh": "Connect to Host via Remote SSH",
-    "azureVirtualMachines.setSshPort": "Open Port 8080",
-    "azureVirtualMachines.setDevEnvironment": "Set Development Envrionment",
+    "azureVirtualMachines.VirtualMachineDevEnvironmentStep": "Set Development Envrionment",
     "azureVirtualMachines.createAzureVPN": "Set up Point-to-Site VPN",
     "azureVirtualMachines.reportIssue": "Report Issue..."
 }

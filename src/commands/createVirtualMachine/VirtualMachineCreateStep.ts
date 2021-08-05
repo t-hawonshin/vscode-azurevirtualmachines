@@ -92,13 +92,23 @@ export class VirtualMachineCreateStep extends AzureWizardExecuteStep<IVirtualMac
         const rgName: string = nonNullValueAndProp(context.resourceGroup, 'name');
 
         const creatingVm: string = localize('creatingVm', 'Creating new virtual machine "{0}"...', vmName);
-        const creatingVmDetails: string = localize(
-            'creatingVmDetails',
-            'Creating new virtual machine "{0}" with size "{1}" and image "{2}"',
-            vmName,
-            nonNullProp(hardwareProfile, 'vmSize').replace(/_/g, ' '), // sizes are written with underscores as spaces
-            `${nonNullProp(storageProfile, 'imageReference').offer} ${nonNullProp(storageProfile, 'imageReference').sku}`);
 
+        let creatingVmDetails: string;
+        if (context.image?.label == "Mariner 1.0") {
+            creatingVmDetails= localize(
+                'creatingVmDetails',
+                'Creating new virtual machine "{0}" with size "{1}" and image "{2}"',
+                vmName,
+                nonNullProp(hardwareProfile, 'vmSize').replace(/_/g, ' '), // sizes are written with underscores as spaces
+                `Mariner 1.0`);
+        } else{
+            creatingVmDetails= localize(
+                'creatingVmDetails',
+                'Creating new virtual machine "{0}" with size "{1}" and image "{2}"',
+                vmName,
+                nonNullProp(hardwareProfile, 'vmSize').replace(/_/g, ' '), // sizes are written with underscores as spaces
+                `${nonNullProp(storageProfile, 'imageReference').offer} ${nonNullProp(storageProfile, 'imageReference').sku}`);
+        }
         const createdVm: string = localize('creatingVm', 'Created new virtual machine "{0}".', vmName);
 
         ext.outputChannel.appendLog(creatingVmDetails);

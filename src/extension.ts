@@ -17,11 +17,10 @@ import { deleteVirtualMachine } from './commands/deleteVirtualMachine/deleteVirt
 import { openInPortal } from './commands/openInPortal';
 import { openInRemoteSsh } from './commands/openInRemoteSsh';
 import { restartVirtualMachine } from './commands/restartVirtualMachine';
-import { setDevEnvironment } from './commands/setDevEnvironment';
-import { setSshPort } from './commands/setSshPort';
 import { startVirtualMachine } from './commands/startVirtualMachine';
 import { stopVirtualMachine } from './commands/stopVirtualMachine';
 import { viewProperties } from './commands/viewProperties';
+import { VirtualMachineDevEnvironmentStep } from './commands/VirtualMachineDevEnvironmentStep';
 import { remoteSshExtensionId } from './constants';
 import { ext } from './extensionVariables';
 import { AzureAccountTreeItem } from './tree/AzureAccountTreeItem';
@@ -58,8 +57,7 @@ export async function activateInternal(context: vscode.ExtensionContext, perfSta
         registerCommand('azureVirtualMachines.copyIpAddress', copyIpAddress);
         registerCommand('azureVirtualMachines.viewProperties', viewProperties);
         registerCommand('azureVirtualMachines.openInRemoteSsh', openInRemoteSsh);
-        registerCommand('azureVirtualMachines.setSshPort', setSshPort);
-        registerCommand('azureVirtualMachines.setDevEnvironment', setDevEnvironment);
+        registerCommand('azureVirtualMachines.VirtualMachineDevEnvironmentStep', VirtualMachineDevEnvironmentStep);
         registerCommand('azureVirtualMachines.createAzureVPN', createAzureVPN);
         registerCommand('azureVirtualMachines.showOutputChannel', () => { ext.outputChannel.show(); });
         registerCommand('azureVirtualMachines.showRemoteSshExtension', () => { void vscode.commands.executeCommand('extension.open', remoteSshExtensionId); });

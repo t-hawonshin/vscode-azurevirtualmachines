@@ -44,6 +44,7 @@ export class NetworkSecurityGroupCreateStep extends AzureWizardExecuteStep<IVirt
         ext.outputChannel.appendLog(local_ip);
 
         const securityRules: NetworkManagementModels.SecurityRule[] = context.os !== VirtualMachineOS.windows ? [
+            { name: 'OpenPort_22', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '22', sourceAddressPrefix: local_ip, destinationAddressPrefix: '*', access: 'Allow', priority: 100, direction: 'Inbound' },
             { name: 'OpenPort_8080', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '8080', sourceAddressPrefix: local_ip, destinationAddressPrefix: '*', access: 'Allow', priority: 350, direction: 'Inbound' },
             { name: 'SSH', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '22', sourceAddressPrefix: '*', destinationAddressPrefix: '*', access: 'Allow', priority: 340, direction: 'Inbound' },
             { name: 'HTTPS', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '443', sourceAddressPrefix: '*', destinationAddressPrefix: '*', access: 'Allow', priority: 320, direction: 'Inbound' },

@@ -50,6 +50,7 @@
         "onCommand:azureVirtualMachines.viewProperties",
         "onCommand:azureVirtualMachines.reportIssue",
         "onCommand:azureVirtualMachines.VirtualMachineDevEnvironmentStep",
+        "onCommand:azureVirtualMachines.createNewProject",
         "onCommand:azureVirtualMachines.createAzureVPN",
         "onView:azVmTree"
     ],
@@ -136,6 +137,11 @@
             {
                 "command": "azureVirtualMachines.VirtualMachineDevEnvironmentStep",
                 "title": "%azureVirtualMachines.VirtualMachineDevEnvironmentStep%",
+                "category": "Azure Virtual Machines"
+            },
+            {
+                "command": "azureVirtualMachines.createNewProject",
+                "title": "%azureVirtualMachines.createNewProject%",
                 "category": "Azure Virtual Machines"
             },
             {
@@ -242,6 +248,11 @@
                     "group": "1@4"
                 },
                 {
+                    "command": "azureVirtualMachines.createNewProject",
+                    "when": "view == azVmTree && viewItem == linuxVirtualMachine",
+                    "group": "1@5"
+                },
+                {
                     "command": "azureVirtualMachines.createAzureVPN",
                     "when": "view == azVmTree && viewItem == linuxVirtualMachine",
                     "group": "3@3"
@@ -338,6 +349,7 @@
         "ssh2": "1.1.0",
         "ssh2-sftp-client": "^7.0.1",
         "ssh2shell": "^1.9.4",
+        "tar": "^6.1.6",
         "vscode-azureextensionui": "^0.46.0",
         "vscode-nls": "^4.1.0",
         "which": "^2.0.2"

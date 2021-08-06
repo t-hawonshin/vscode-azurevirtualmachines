@@ -7,6 +7,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as async from 'async';
+import * as path from 'path';
 import * as ssh2 from 'ssh2';
 import * as SftpClient from 'ssh2-sftp-client';
 import { MessageItem, window } from "vscode";
@@ -105,12 +106,13 @@ export async function VirtualMachineDevEnvironmentStep(context: IActionContext, 
     };
 
     const sftpconn = new SftpClient();
-    const current_dir = __dirname.split('/').slice(0, -3).join('/');
+    const current_dir = path.join(__dirname, '..', '..', '..');
+
     await sftpconn.connect(config).then(() => {
         ext.outputChannel.appendLog('Connection Success');
     });
 
-    await sftpconn.fastPut(current_dir + '/src/commands/.vscode.tar.gz', '.vscode.tar.gz').then(() => {
+    await sftpconn.fastPut(current_dir + '/src/files/.vscode.tar.gz', '.vscode.tar.gz').then(() => {
         return sftpconn.end();
     });
 

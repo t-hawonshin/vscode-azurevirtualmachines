@@ -16,6 +16,7 @@
     "azureVirtualMachines.viewProperties": "View Properties",
     "azureVirtualMachines.openInRemoteSsh": "Connect to Host via Remote SSH",
     "azureVirtualMachines.VirtualMachineDevEnvironmentStep": "Set Development Envrionment",
+    "azureVirtualMachines.createNewProject": "Create New Project",
     "azureVirtualMachines.createAzureVPN": "Set up Point-to-Site VPN",
     "azureVirtualMachines.reportIssue": "Report Issue..."
 }

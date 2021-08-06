@@ -21,7 +21,6 @@ import { restartVirtualMachine } from './commands/restartVirtualMachine';
 import { startVirtualMachine } from './commands/startVirtualMachine';
 import { stopVirtualMachine } from './commands/stopVirtualMachine';
 import { viewProperties } from './commands/viewProperties';
-import { VirtualMachineDevEnvironmentStep } from './commands/VirtualMachineDevEnvironmentStep';
 import { remoteSshExtensionId } from './constants';
 import { ext } from './extensionVariables';
 import { AzureAccountTreeItem } from './tree/AzureAccountTreeItem';
@@ -58,7 +57,6 @@ export async function activateInternal(context: vscode.ExtensionContext, perfSta
         registerCommand('azureVirtualMachines.copyIpAddress', copyIpAddress);
         registerCommand('azureVirtualMachines.viewProperties', viewProperties);
         registerCommand('azureVirtualMachines.openInRemoteSsh', openInRemoteSsh);
-        registerCommand('azureVirtualMachines.VirtualMachineDevEnvironmentStep', VirtualMachineDevEnvironmentStep);
         registerCommand('azureVirtualMachines.createNewProject', createNewProject);
         registerCommand('azureVirtualMachines.createAzureVPN', createAzureVPN);
         registerCommand('azureVirtualMachines.showOutputChannel', () => { ext.outputChannel.show(); });

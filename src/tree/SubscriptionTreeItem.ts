@@ -16,6 +16,7 @@ import { PublicIpCreateStep } from '../commands/createVirtualMachine/PublicIpCre
 import { SubnetCreateStep } from '../commands/createVirtualMachine/SubnetCreateStep';
 import { UsernamePromptStep } from '../commands/createVirtualMachine/UsernamePromptStep';
 import { VirtualMachineCreateStep } from '../commands/createVirtualMachine/VirtualMachineCreateStep';
+import { VirtualMachineMarinerSetStep } from '../commands/createVirtualMachine/VirtualMachineMarinerSetStep';
 import { VirtualMachineNameStep } from '../commands/createVirtualMachine/VirtualMachineNameStep';
 import { VirtualNetworkCreateStep } from '../commands/createVirtualMachine/VirtualNetworkCreateStep';
 import { localize } from '../localize';
@@ -114,6 +115,10 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
         executeSteps.push(new NetworkInterfaceCreateStep());
         executeSteps.push(new VirtualMachineCreateStep());
         executeSteps.push(new VerifyProvidersStep([computeProvider, 'Microsoft.Network']));
+
+        if (wizardContext.image?.label == "Mariner 1.0") {
+            executeSteps.push(new VirtualMachineMarinerSetStep());
+        }
 
         const title: string = 'Create new virtual machine';
 

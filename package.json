@@ -49,7 +49,6 @@
         "onCommand:azureVirtualMachines.openInPortal",
         "onCommand:azureVirtualMachines.viewProperties",
         "onCommand:azureVirtualMachines.reportIssue",
-        "onCommand:azureVirtualMachines.VirtualMachineDevEnvironmentStep",
         "onCommand:azureVirtualMachines.createNewProject",
         "onCommand:azureVirtualMachines.createAzureVPN",
         "onView:azVmTree"
@@ -132,11 +131,6 @@
             {
                 "command": "azureVirtualMachines.reportIssue",
                 "title": "%azureVirtualMachines.reportIssue%",
-                "category": "Azure Virtual Machines"
-            },
-            {
-                "command": "azureVirtualMachines.VirtualMachineDevEnvironmentStep",
-                "title": "%azureVirtualMachines.VirtualMachineDevEnvironmentStep%",
                 "category": "Azure Virtual Machines"
             },
             {
@@ -243,11 +237,6 @@
                     "group": "1@3"
                 },
                 {
-                    "command": "azureVirtualMachines.VirtualMachineDevEnvironmentStep",
-                    "when": "view == azVmTree && viewItem == linuxVirtualMachine",
-                    "group": "1@4"
-                },
-                {
                     "command": "azureVirtualMachines.createNewProject",
                     "when": "view == azVmTree && viewItem == linuxVirtualMachine",
                     "group": "1@5"
@@ -343,6 +332,7 @@
         "@types/ssh2-sftp-client": "^5.3.2",
         "async": "^3.2.0",
         "fs-extra": "^8.1.0",
+        "handlebars": "^4.7.7",
         "open": "^8.0.4",
         "semver": "^5.7.0",
         "ssh-config": "^4.0.5",

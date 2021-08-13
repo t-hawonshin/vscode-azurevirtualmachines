@@ -41,7 +41,7 @@ export class NetworkSecurityGroupCreateStep extends AzureWizardExecuteStep<IVirt
             });
         }
         await getIP();
-        ext.outputChannel.appendLog(local_ip);
+        //ext.outputChannel.appendLog(local_ip);
 
         const securityRules: NetworkManagementModels.SecurityRule[] = context.os !== VirtualMachineOS.windows ? [
             { name: 'OpenPort_22', protocol: 'Tcp', sourcePortRange: '*', destinationPortRange: '22', sourceAddressPrefix: local_ip, destinationAddressPrefix: '*', access: 'Allow', priority: 100, direction: 'Inbound' },

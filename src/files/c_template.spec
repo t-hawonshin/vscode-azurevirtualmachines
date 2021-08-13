@@ -12,13 +12,13 @@ Source0: https://www.example.com/%{name}/releases/%{name}-%{version}.tar.gz
 BuildRequires: gcc
 BuildRequires: make
 
+%define  debug_package %{nil}
+
 %description
 The long-tail description for our Hello World Example implemented in C.
 
 %prep
 %setup -q
-#important to know that your package directory name should be
-#%{name}-%{version} of your package
 
 %build
 make %{?_smp_mflags}
@@ -30,5 +30,5 @@ make %{?_smp_mflags}
 %{_bindir}/%{name}
 
 %changelog
-* {{date}} {{username}} <{{username}}@microsoft.com> - 1.0-1
+* {{date}} {{username}} <{{email}}> - 1.0-1
   - Initial set up

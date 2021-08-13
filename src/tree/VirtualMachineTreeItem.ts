@@ -75,6 +75,10 @@ export class VirtualMachineTreeItem extends AzureTreeItem {
         return nonNullValueAndProp(this.virtualMachine.osProfile, 'adminPassword');
     }
 
+    public getAzureEmail(): string {
+        return this.root.userId;
+    }
+
 
     public async getPrivateIpAddress(): Promise<string> {
         const networkClient: NetworkManagementClient = await createNetworkClient(this.root);

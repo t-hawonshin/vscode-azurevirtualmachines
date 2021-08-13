@@ -110,14 +110,16 @@ export class VirtualMachineMarinerSetStep extends AzureWizardExecuteStep<IVirtua
             ext.outputChannel.appendLog('Connection Success');
         });
 
-        await sftpconn.fastPut(path.join(current_dir, 'src','files','.vscode.tar.gz'), '.vscode.tar.gz').then(() => {
+        await sftpconn.fastPut(path.join(current_dir, 'src', 'files', '.vscode.tar.gz'), '.vscode.tar.gz').then(() => {
             return sftpconn.end();
         });
 
         const cmd2 = {
             cmd1: 'yes y | sudo tdnf install build-essential gdb',
-            cmd2: 'tar -xvf .vscode.tar.gz',
-            cmd3: 'sudo mkdir project'
+            cmd2: 'yes y | sudo tdnf install dos2unix',
+            cmd3: 'tar -xvf .vscode.tar.gz',
+            cmd4: 'sudo rm -rf .vscode.tar.gz',
+            cmd5: 'mkdir project'
         };
 
         const config2 = {

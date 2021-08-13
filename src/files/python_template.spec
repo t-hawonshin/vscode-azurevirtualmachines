@@ -44,7 +44,6 @@ install -m 0644 %{name}.py* %{buildroot}/usr/lib/%{name}/
 
 %files
 %defattr(-,root,root,-)
-%license LICENSE
 %dir /usr/lib/%{name}/
 %{_bindir}/%{name}
 /usr/lib/%{name}/%{name}.py*
@@ -52,5 +51,5 @@ install -m 0644 %{name}.py* %{buildroot}/usr/lib/%{name}/
 
 
 %changelog
-* {{date}} {{username}} <{{username}}@microsoft.com> - 1.0-1
+* {{date}} {{username}} <{{email}}> - 1.0-1
   - Initial set up

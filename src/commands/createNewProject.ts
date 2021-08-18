@@ -193,6 +193,6 @@ export async function createNewProject(context: IActionContext, node?: VirtualMa
         host = Array.isArray(hostConfig.value) ? hostConfig.value[0] : hostConfig.value;
     }
 
-    await commands.executeCommand('opensshremotes.openEmptyWindowInCurrentWindow', { host });
+    await commands.executeCommand('opensshremotes.openEmptyWindow', { host });
 
 }

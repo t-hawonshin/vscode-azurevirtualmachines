@@ -119,7 +119,7 @@ export class VirtualMachineMarinerSetStep extends AzureWizardExecuteStep<IVirtua
             cmd2: 'yes y | sudo tdnf install dos2unix',
             cmd3: 'tar -xvf .vscode.tar.gz',
             cmd4: 'sudo rm -rf .vscode.tar.gz',
-            cmd5: 'mkdir project'
+            cmd5: 'mkdir project',
         };
 
         const config2 = {
